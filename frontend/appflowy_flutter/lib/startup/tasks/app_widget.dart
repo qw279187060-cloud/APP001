@@ -243,7 +243,7 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
                     themeMode: state.themeMode,
                     localizationsDelegates: context.localizationDelegates,
                     supportedLocales: context.supportedLocales,
-                    locale: state.locale,
+                    locale: _resolveFrameworkLocale(state.locale),
                     routerConfig: routerConfig,
                     builder: (context, child) {
                       final brightness = Theme.of(context).brightness;
@@ -298,6 +298,21 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
       );
     }
   }
+}
+
+// Windows auto-activates the Microsoft Pinyin IME whenever the app's
+// framework Locale is zh-CN, and that IME swallows the '/' keystroke used
+// to open the slash menu.  Translations still come from EasyLocalization
+// (which keeps its own locale), so we can safely lie to Flutter about the
+// framework locale to prevent the IME activation without changing the UI
+// language the user sees.
+Locale _resolveFrameworkLocale(Locale locale) {
+  if (Platform.isWindows &&
+      locale.languageCode == 'zh' &&
+      locale.countryCode == 'CN') {
+    return const Locale('en', 'US');
+  }
+  return locale;
 }
 
 class AppGlobals {
