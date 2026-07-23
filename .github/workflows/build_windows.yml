@@ -15,7 +15,10 @@ env:
 jobs:
   build-windows:
     name: build windows x86_64
-    runs-on: windows-latest
+    # windows-2022: newer images (windows-2025) lack the Visual Studio C++
+    # components Flutter 3.27 expects, so `flutter build windows` falls back
+    # to the VS2019 generator and fails
+    runs-on: windows-2022
     timeout-minutes: 180
     env:
       APP_VERSION: ${{ github.event.inputs.version }}
