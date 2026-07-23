@@ -27,6 +27,7 @@ final CharacterShortcutEvent appFlowySlashCommand = CharacterShortcutEvent(
 
 CharacterShortcutEvent customAppFlowySlashCommand({
   required SlashMenuItemsBuilder itemsBuilder,
+  String character = '/',
   bool shouldInsertSlash = true,
   bool deleteKeywordsByDefault = false,
   bool singleColumn = true,
@@ -35,7 +36,7 @@ CharacterShortcutEvent customAppFlowySlashCommand({
 }) {
   return CharacterShortcutEvent(
     key: 'show the slash menu',
-    character: '/',
+    character: character,
     handler: (editorState) => _showSlashMenu(
       editorState,
       shouldInsertSlash: shouldInsertSlash,

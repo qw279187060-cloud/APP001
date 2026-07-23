@@ -43,6 +43,23 @@ List<CharacterShortcutEvent> buildCharacterShortcutEvents(
       supportSlashMenuNodeTypes: supportSlashMenuNodeTypes,
     ),
 
+    // CJK IME alternatives: Microsoft Pinyin outputs '、' (dunhao) when
+    // pressing '/' in simplified Chinese mode; some IMEs output '／'.
+    customAppFlowySlashCommand(
+      character: '、',
+      itemsBuilder: slashMenuItemsBuilder,
+      shouldInsertSlash: false,
+      style: styleCustomizer.selectionMenuStyleBuilder(),
+      supportSlashMenuNodeTypes: supportSlashMenuNodeTypes,
+    ),
+    customAppFlowySlashCommand(
+      character: '／',
+      itemsBuilder: slashMenuItemsBuilder,
+      shouldInsertSlash: false,
+      style: styleCustomizer.selectionMenuStyleBuilder(),
+      supportSlashMenuNodeTypes: supportSlashMenuNodeTypes,
+    ),
+
     customFormatGreaterEqual,
     customFormatDashGreater,
     customFormatDoubleHyphenEmDash,
