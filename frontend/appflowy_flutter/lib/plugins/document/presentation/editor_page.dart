@@ -89,6 +89,7 @@ class _AppFlowyEditorPageState extends State<AppFlowyEditorPage>
   );
 
   late final List<CommandShortcutEvent> commandShortcuts = [
+    _buildSlashKeyCommandShortcut(),
     ...commandShortcutEvents,
     ..._buildFindAndReplaceCommands(),
   ];
@@ -516,6 +517,34 @@ class _AppFlowyEditorPageState extends State<AppFlowyEditorPage>
     if (enableRtlToolbarItems) {
       toolbarItems.addAll(textDirectionItems);
     }
+  }
+
+  CommandShortcutEvent _buildSlashKeyCommandShortcut() {
+    return CommandShortcutEvent(
+      key: 'show slash menu',
+      command: 'slash',
+      getDescription: null,
+      handler: (editorState) {
+        final selection = editorState.selection;
+        if (selection == null || !selection.isCollapsed) {
+          return KeyEventResult.ignored;
+        }
+        final node = editorState.getNodeAtPath(selection.start.path);
+        if (node == null || !supportSlashMenuNodeTypes.contains(node.type)) {
+          return KeyEventResult.ignored;
+        }
+        customAppFlowySlashCommand(
+          itemsBuilder: (es, n) => _customSlashMenuItems(
+            editorState: es,
+            node: n,
+          ),
+          shouldInsertSlash: false,
+          style: styleCustomizer.selectionMenuStyleBuilder(),
+          supportSlashMenuNodeTypes: supportSlashMenuNodeTypes,
+        ).handler(editorState);
+        return KeyEventResult.handled;
+      },
+    );
   }
 
   List<CommandShortcutEvent> _buildFindAndReplaceCommands() {
