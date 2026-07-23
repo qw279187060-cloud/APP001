@@ -99,6 +99,8 @@ dependencies:
   keyboard_height_plugin: ^0.1.5
   leak_tracker: ^10.0.0
   linked_scroll_controller: ^0.2.0
+  # Chinese pinyin conversion, used by the slash menu search
+  lpinyin: ^2.0.3
 
   # Notifications
   # TODO: Consider implementing custom package

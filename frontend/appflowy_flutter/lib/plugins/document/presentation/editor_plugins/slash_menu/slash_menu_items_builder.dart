@@ -7,6 +7,7 @@ import 'package:universal_platform/universal_platform.dart';
 
 import 'slash_menu_items/mobile_items.dart';
 import 'slash_menu_items/slash_menu_items.dart';
+import 'slash_menu_pinyin.dart';
 
 /// Build slash menu items
 ///
@@ -25,23 +26,27 @@ List<SelectionMenuItem> slashMenuItemsBuilder({
       isEmpty = true;
     }
   }
+  final List<SelectionMenuItem> items;
   if (isMobile) {
     if (isInTable) {
-      return mobileItemsInTale;
+      items = mobileItemsInTale;
     } else {
-      return mobileItems;
+      items = mobileItems;
     }
   } else {
     if (isInTable) {
-      return _simpleTableSlashMenuItems();
+      items = _simpleTableSlashMenuItems();
     } else {
-      return _defaultSlashMenuItems(
+      items = _defaultSlashMenuItems(
         isLocalMode: isLocalMode,
         documentBloc: documentBloc,
         isEmpty: isEmpty,
       );
     }
   }
+  // Support searching by Chinese, full pinyin, or pinyin initials,
+  // e.g. 文档 / wendang / wd.
+  return appendPinyinKeywords(items);
 }
 
 /// The default slash menu items are used in the text-based block.
